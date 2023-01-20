@@ -6,23 +6,20 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dto.EmailDto;
 import com.example.demo.dto.PersonDto;
 import com.example.demo.entity.EmailEntity;
 import com.example.demo.entity.PersonEntity;
-import com.example.demo.repository.EmailRepository;
 import com.example.demo.repository.PersonRepository;
 
 
 @Service
-public class PersonServiceImpl implements PersonService, EmailService {
+public class PersonServiceImpl implements PersonService {
 
 	@Autowired
 	private PersonRepository personRepository;
-	@Autowired
-	private EmailRepository emailRepository;
 
 	@Override
-	// nella firma del metodo PersonDto al posto di PersonEntity
 	public List<PersonDto> getAllPersons() {
 		List<PersonEntity> personEntities = personRepository.findAll();
 		return personEntities.stream().map(personEntity -> {
@@ -31,9 +28,17 @@ public class PersonServiceImpl implements PersonService, EmailService {
 			personDto.setName(personEntity.getName());
 			personDto.setSurname(personEntity.getSurname());
 			personDto.setPhone(personEntity.getPhone());
+			personDto.setEmails(personEntity.getEmails().stream()
+				.map(emailEntity -> {
+				    EmailDto emailDto = new EmailDto();
+				    emailDto.setEmail(emailEntity.getEmail());
+				    return emailDto;
+				})
+				.collect(Collectors.toList()));
 			return personDto;
 		}).collect(Collectors.toList());
 	}
+	
 
 	@Override
     public void savePerson(PersonDto personDto) {
@@ -60,11 +65,6 @@ public class PersonServiceImpl implements PersonService, EmailService {
 	@Override
 	public void deletePersonById(long id) {
 		this.personRepository.deleteById(id);
-	}
-	
-	@Override
-	public void saveEmail(EmailEntity email) {
-		this.emailRepository.save(email);
 	}
 
 }
