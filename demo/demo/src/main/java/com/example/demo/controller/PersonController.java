@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.PersonDto;
-import com.example.demo.entity.PersonEntity;
 import com.example.demo.service.PersonService;
 
 
@@ -27,11 +26,11 @@ public class PersonController {
 
 	
 	@GetMapping("/getAllPersons")
-	public ResponseEntity<List<PersonEntity>> getAllPersons() {
+	public ResponseEntity<List<PersonDto>> getAllPersons() {
 		
 		// get list of all persons
-	    List<PersonEntity> persons = personService.getAllPersons();
-	    return new ResponseEntity<List<PersonEntity>>(persons, HttpStatus.OK);
+	    List<PersonDto> persons = personService.getAllPersons();
+	    return new ResponseEntity<List<PersonDto>>(persons, HttpStatus.OK);
 	}
 	
 	@PostMapping("/savePerson")

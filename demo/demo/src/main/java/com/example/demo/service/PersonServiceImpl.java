@@ -23,8 +23,16 @@ public class PersonServiceImpl implements PersonService, EmailService {
 
 	@Override
 	// nella firma del metodo PersonDto al posto di PersonEntity
-	public List<PersonEntity> getAllPersons() {
-		return personRepository.findAll();
+	public List<PersonDto> getAllPersons() {
+		List<PersonEntity> personEntities = personRepository.findAll();
+		return personEntities.stream().map(personEntity -> {
+			PersonDto personDto = new PersonDto();
+			personDto.setId(personEntity.getId());
+			personDto.setName(personEntity.getName());
+			personDto.setSurname(personEntity.getSurname());
+			personDto.setPhone(personEntity.getPhone());
+			return personDto;
+		}).collect(Collectors.toList());
 	}
 
 	@Override
