@@ -5,11 +5,16 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.example.demo.dto.AccountDto;
 import com.example.demo.dto.EmailDto;
 import com.example.demo.dto.PersonDto;
+import com.example.demo.entity.AccountEntity;
 import com.example.demo.entity.EmailEntity;
 import com.example.demo.entity.PersonEntity;
+import com.example.demo.repository.AccountRepository;
 import com.example.demo.repository.PersonRepository;
 
 
@@ -18,6 +23,9 @@ public class PersonServiceImpl implements PersonService {
 
 	@Autowired
 	private PersonRepository personRepository;
+	
+	@Autowired
+	private AccountRepository accountRepository;
 
 	@Override
 	public List<PersonDto> getAllPersons() {
@@ -41,6 +49,7 @@ public class PersonServiceImpl implements PersonService {
 	
 
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void savePerson(PersonDto personDto) {
 
         PersonEntity person = new PersonEntity();
@@ -60,11 +69,23 @@ public class PersonServiceImpl implements PersonService {
         person.setEmails(emails);
 
         this.personRepository.save(person);
-    }
+//        throw new RuntimeException("test error transactional");
+    } 
 
 	@Override
 	public void deletePersonById(long id) {
 		this.personRepository.deleteById(id);
+	}
+	
+	@Override
+	public AccountEntity saveAccount(AccountDto dto) {
+		
+		AccountEntity account = new AccountEntity();
+		account.setUsername(dto.getUsername());
+		account.setPassword(dto.getPassword());
+		
+		return accountRepository.save(account);
+		
 	}
 
 }

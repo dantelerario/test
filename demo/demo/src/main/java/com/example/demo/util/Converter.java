@@ -3,8 +3,10 @@ package com.example.demo.util;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.example.demo.dto.AccountDto;
 import com.example.demo.dto.EmailDto;
 import com.example.demo.dto.PersonDto;
+import com.example.demo.entity.AccountEntity;
 import com.example.demo.entity.EmailEntity;
 import com.example.demo.entity.PersonEntity;
 
@@ -44,5 +46,12 @@ public class Converter {
                    .map(Converter::toEntity)
                    .collect(Collectors.toList());
     }
+    
+	public static AccountDto toDto(AccountEntity entity) {
+		AccountDto dto = new AccountDto();
+		dto.setUsername(entity.getUsername());
+		dto.setPassword(entity.getPassword());
+		return dto;
+	}
 	
 }
