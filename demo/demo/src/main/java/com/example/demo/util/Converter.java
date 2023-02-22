@@ -11,13 +11,30 @@ import com.example.demo.entity.EmailEntity;
 import com.example.demo.entity.PersonEntity;
 
 public class Converter {
-	public static PersonDto toDto(PersonEntity entity) {
-		PersonDto dto = new PersonDto();
-		dto.setName(entity.getName());
-		dto.setSurname(entity.getSurname());
-		dto.setPhone(entity.getPhone());
-		dto.setEmails(toDtoList(entity.getEmails()));
-		return dto;
+	
+	public static PersonDto toDto(PersonEntity personEntity) {
+		PersonDto personDto = new PersonDto();
+		personDto.setId(personEntity.getId());
+		personDto.setName(personEntity.getName());
+		personDto.setSurname(personEntity.getSurname());
+		personDto.setPhone(personEntity.getPhone());
+		personDto.setEmails(personEntity.getEmails().stream()
+			.map(emailEntity -> {
+			    EmailDto emailDto = new EmailDto();
+			    emailDto.setEmail(emailEntity.getEmail());
+			    return emailDto;
+			})
+			.collect(Collectors.toList()));
+//		personDto.getAccount().setUsername(personEntity.getAccount().getUsername());
+//		personDto.getAccount().setPassword(personEntity.getAccount().getPassword());
+		personDto.setEmails(personEntity.getEmails().stream()
+				.map(emailEntity -> {
+				    EmailDto emailDto = new EmailDto();
+				    emailDto.setEmail(emailEntity.getEmail());
+				    return emailDto;
+				})
+				.collect(Collectors.toList()));
+		return personDto;
 	}
 	
 	public static EmailDto toDto(EmailEntity entity) {

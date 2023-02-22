@@ -1,5 +1,6 @@
 package com.example.demo.dto;
 
+import com.example.demo.entity.AccountEntity;
 import com.example.demo.entity.EmailEntity;
 import com.example.demo.entity.PersonEntity;
 
@@ -11,4 +12,5 @@ import lombok.Setter;
 public class SavePersonInputDto {
 	private PersonEntity personEntity; 
 	private EmailEntity emailEntity; 
+	private AccountEntity accountEntity;
 }

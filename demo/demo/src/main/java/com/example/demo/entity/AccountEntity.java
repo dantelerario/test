@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -32,8 +31,7 @@ public class AccountEntity implements Serializable {
 	@Column(name = "PASSWORD")
 	private String password;
 	
-	@OneToOne
-    @JoinColumn(name = "PERSON_ID")
-    private PersonEntity personAccount;
+//	@OneToOne(mappedBy = "account")
+//	  private PersonEntity person;
 	
 }
